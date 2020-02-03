@@ -1,0 +1,63 @@
+plugins {
+	id 'java-gradle-plugin'
+	id 'maven-publish'
+	id 'com.gradle.plugin-publish' version '0.10.1'
+	id "nebula.integtest" version "7.0.7"
+	id 'org.jetbrains.kotlin.jvm' version '1.3.61'
+}
+
+group 'io.spring.gradle'
+description = 'Sets up Javadoc and Aggregate Javadoc'
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven { url "https://plugins.gradle.org/m2/" }
+}
+
+dependencyLocking {
+	lockAllConfigurations()
+}
+
+dependencies {
+	implementation gradleApi()
+	testImplementation 'org.assertj:assertj-core:3.+'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.+'
+	testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.+'
+}
+
+tasks.withType(Test).configureEach {
+	useJUnitPlatform()
+}
+
+configure([compileKotlin, compileTestKotlin]) {
+	kotlinOptions {
+		jvmTarget = "1.8"
+	}
+}
+
+pluginBundle {
+	website = 'https://github.com/spring-gradle-plugins/javadoc-plugin'
+	vcsUrl = 'https://github.com/spring-gradle-plugins/javadoc-plugin.git'
+	description = project.description
+	tags = ['Javadoc']
+}
+
+gradlePlugin {
+	plugins {
+		javadocPlugin {
+			id = 'io.spring.javadoc'
+			displayName = 'Javadoc Plugin'
+			description = 'Sets up a Project with Javadoc Task. Used by AggregateJavadocPlugin to setup aggregate Javadoc too'
+			implementationClass = 'io.spring.gradle.javadoc.JavadocPlugin'
+		}
+		aggregateJavadocPlugin {
+			id = 'io.spring.javadoc-aggregate'
+			displayName = 'Aggregate Javadoc Plugin'
+			description = 'Sets up a Project with Aggregate Javadoc Task'
+			implementationClass = 'io.spring.gradle.javadoc.AggregateJavadocPlugin'
+		}
+	}
+}

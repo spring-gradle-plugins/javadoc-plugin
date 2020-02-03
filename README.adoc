@@ -1,0 +1,53 @@
+:version: 0.0.1.BUILD-SNAPSHOT
+:doctype: book
+
+= Intro
+
+Provides support for producing an aggregate Javadoc that follows Gradle best practices based on https://github.com/jjohannes/gradle-demos/blob/master/aggregated-javadoc
+
+== Usage
+
+First apply the plugin to each module that should be included in the aggregate Javadoc.
+The plugin assumes that you also have applied `JavaPlugin` to the project
+
+.build.gradle
+[source,groovy,subs="+attributes"]
+----
+plugins {
+	id 'java-library'
+	id 'io.spring.javadoc' version '{version}'
+}
+----
+
+Next apply the `AggregateJavadoc` plugin to a project.
+
+.aggregator/build.gradle
+[source,groovy,subs="+attributes"]
+----
+plugins {
+	id 'io.spring.javadoc-aggregate' version '{version}'
+}
+----
+
+Finally, run the task.
+
+[source,bash]
+----
+./gradlew :aggregator:aggregateJavadoc
+----
+
+
+[NOTE]
+====
+For our example, we assume that `io.spring.javadoc-aggregate` is applied to the project `aggregator`.
+You may apply to any module, but you will need to adjust the task accordingly.
+====
+
+== Snapshots
+
+The plugin does not currently deploy SNAPSHOTs.
+To use the latest snapshot execute the build as a https://docs.gradle.org/current/userguide/composite_builds.html[composite build].
+
+== License
+
+This project is Open Source software released under the http://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license].
