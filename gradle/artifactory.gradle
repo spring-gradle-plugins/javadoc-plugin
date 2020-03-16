@@ -1,0 +1,25 @@
+def isSnapshot = version?.matches(/^.*[.-](BUILD\-)?SNAPSHOT$/)
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+}
+
+artifactory {
+	contextUrl = 'https://repo.spring.io'
+	publish {
+		repository {
+			repoKey = isSnapshot ? 'plugins-snapshot-local' : 'plugins-release-local'
+			if(project.hasProperty('artifactoryUsername')) {
+				username = artifactoryUsername
+				password = artifactoryPassword
+			}
+		}
+		defaults {
+			publications('mavenJava')
+		}
+	}
+}
