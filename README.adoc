@@ -7,7 +7,20 @@ Provides support for producing an aggregate Javadoc that follows Gradle best pra
 
 == Usage
 
-First apply the plugin to each module that should be included in the aggregate Javadoc.
+First ensure your `settings.gradle` is updated to resolve plugins from `repo.spring.io` as shown below:
+
+.settings.gradle
+[source,groovy]
+----
+pluginManagement {
+	repositories {
+		gradlePluginPortal()
+		maven { url 'https://repo.spring.io/plugins-snapshots' }
+	}
+}
+----
+
+Next apply the plugin to each module that should be included in the aggregate Javadoc.
 The plugin assumes that you also have applied `JavaPlugin` to the project
 
 .build.gradle
@@ -42,11 +55,6 @@ Finally, run the task.
 For our example, we assume that `io.spring.javadoc-aggregate` is applied to the project `aggregator`.
 You may apply to any module, but you will need to adjust the task accordingly.
 ====
-
-== Snapshots
-
-The plugin does not currently deploy SNAPSHOTs.
-To use the latest snapshot execute the build as a https://docs.gradle.org/current/userguide/composite_builds.html[composite build].
 
 == License
 
