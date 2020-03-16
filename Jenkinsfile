@@ -21,10 +21,7 @@ stage('Artifactory Deploy') {
 	node('linux') {
 		checkout scm
 		sh 'git clean -dfx'
-		withCredentials([SPRING_SIGNING_SECRING,
-		 SPRING_GPG_PASSPHRASE,
-		 OSSRH_CREDENTIALS,
-		 ARTIFACTORY_CREDENTIALS,
+		withCredentials([ARTIFACTORY_CREDENTIALS,
 		 GRADLE_ENTERPRISE_CACHE_USER,
 		 GRADLE_ENTERPRISE_SECRET_ACCESS_KEY]) {
 			withEnv([jdkEnv(),
