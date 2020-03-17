@@ -1,13 +1,5 @@
 def isSnapshot = version?.matches(/^.*[.-](BUILD\-)?SNAPSHOT$/)
 
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
-}
-
 artifactory {
 	contextUrl = 'https://repo.spring.io'
 	publish {
@@ -19,7 +11,7 @@ artifactory {
 			}
 		}
 		defaults {
-			publications('mavenJava')
+			publications(publishing.publications.names as String[])
 		}
 	}
 }
