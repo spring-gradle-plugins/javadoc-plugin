@@ -1,4 +1,4 @@
-:version: 0.0.1-SNAPSHOT
+:version: 0.0.1
 :doctype: book
 
 = Aggregate Javadoc Gradle Plugin
@@ -8,7 +8,8 @@ This plugin is based on https://github.com/jjohannes/gradle-demos/blob/master/ag
 
 == Usage
 
-First ensure your `settings.gradle` is updated to resolve plugins from `repo.spring.io` as shown below:
+Releases are deployed to the Gradle Plugin Portal.
+If you are using a SNAPSHOT, first ensure your `settings.gradle` is updated to resolve plugins from `repo.spring.io` as shown below:
 
 .settings.gradle
 [source,groovy]
