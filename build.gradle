@@ -8,6 +8,7 @@ plugins {
 }
 
 apply from: "gradle/artifactory.gradle"
+apply from: "gradle/java-gradle-plugin.gradle"
 
 group 'io.spring.gradle'
 description = 'Sets up Javadoc and Aggregate Javadoc'
@@ -38,29 +39,5 @@ tasks.withType(Test).configureEach {
 configure([compileKotlin, compileTestKotlin]) {
 	kotlinOptions {
 		jvmTarget = "1.8"
-	}
-}
-
-pluginBundle {
-	website = 'https://github.com/spring-gradle-plugins/javadoc-plugin'
-	vcsUrl = 'https://github.com/spring-gradle-plugins/javadoc-plugin.git'
-	description = project.description
-	tags = ['Javadoc']
-}
-
-gradlePlugin {
-	plugins {
-		javadocPlugin {
-			id = 'io.spring.javadoc'
-			displayName = 'Javadoc Plugin'
-			description = 'Sets up a Project with Javadoc Task. Used by AggregateJavadocPlugin to setup aggregate Javadoc too'
-			implementationClass = 'io.spring.gradle.javadoc.JavadocPlugin'
-		}
-		aggregateJavadocPlugin {
-			id = 'io.spring.javadoc-aggregate'
-			displayName = 'Aggregate Javadoc Plugin'
-			description = 'Sets up a Project with Aggregate Javadoc Task'
-			implementationClass = 'io.spring.gradle.javadoc.AggregateJavadocPlugin'
-		}
 	}
 }
