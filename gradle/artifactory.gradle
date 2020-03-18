@@ -15,3 +15,13 @@ artifactory {
 		}
 	}
 }
+
+project.tasks.register('deploy', new Action<Task>() {
+	@Override
+	void execute(Task deploy) {
+		deploy.dependsOn project.tasks.artifactoryPublish
+		if (!isSnapshot) {
+			deploy.dependsOn project.tasks.publishPlugins
+		}
+	}
+})
