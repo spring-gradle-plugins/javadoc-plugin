@@ -1,0 +1,8 @@
+plugins {
+    id 'io.spring.javadoc-aggregate'
+}
+
+dependencies {
+    implementation project(':module1')
+    implementation project(':module3')
+}

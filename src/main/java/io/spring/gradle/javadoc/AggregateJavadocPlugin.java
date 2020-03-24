@@ -7,6 +7,7 @@ import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.artifacts.ConfigurationPublications;
 import org.gradle.api.artifacts.Dependency;
+import org.gradle.api.artifacts.DependencySet;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.attributes.AttributeContainer;
 import org.gradle.api.attributes.Category;
@@ -39,15 +40,20 @@ public class AggregateJavadocPlugin implements Plugin<Project> {
 		ConfigurationContainer configurations = project.getConfigurations();
 		Configuration implementation = configurations
 				.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME);
-		project.getGradle().getRootProject().subprojects(new Action<Project>() {
+		implementation.defaultDependencies(new Action<DependencySet>() {
 			@Override
-			public void execute(Project subproject) {
-				subproject.getPlugins().withType(JavadocPlugin.class, new Action<JavadocPlugin>() {
+			public void execute(DependencySet defaultDependencies) {
+				project.getGradle().getRootProject().subprojects(new Action<Project>() {
 					@Override
-					public void execute(JavadocPlugin javadoc) {
-						Dependency dependency = project.getDependencies()
-								.create(subproject);
-						implementation.getDependencies().add(dependency);
+					public void execute(Project subproject) {
+						subproject.getPlugins().withType(JavadocPlugin.class, new Action<JavadocPlugin>() {
+							@Override
+							public void execute(JavadocPlugin javadoc) {
+								Dependency dependency = project.getDependencies()
+										.create(subproject);
+								defaultDependencies.add(dependency);
+							}
+						});
 					}
 				});
 			}

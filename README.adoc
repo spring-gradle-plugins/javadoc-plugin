@@ -63,6 +63,21 @@ For our example, we assume that `io.spring.javadoc-aggregate` is applied to the 
 You may apply to any module, but you will need to adjust the task accordingly.
 ====
 
+You can customize which projects' Javadoc is aggregated by explicitly providing projects for the `implementation` configuration.
+For example, the following explicitly aggregates `module1` and `module2` regardless of which projects have `io.spring.javadoc` applied to them.
+
+[source,groovy]
+----
+plugins {
+    id 'io.spring.javadoc-aggregate'
+}
+
+dependencies {
+    implementation project(':module1')
+    implementation project(':module3')
+}
+----
+
 == License
 
 This project is Open Source software released under the http://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license].
