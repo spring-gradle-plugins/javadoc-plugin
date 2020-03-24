@@ -6,9 +6,10 @@
 Provides support for producing an aggregate Javadoc that follows Gradle best practices.
 This plugin is based on https://github.com/jjohannes/gradle-demos/blob/master/aggregated-javadoc[work by jjohannes].
 
-== Usage
+== Downloading
 
-Releases are deployed to the Gradle Plugin Portal.
+Releases are deployed to the https://plugins.gradle.org/plugin/io.spring.javadoc-aggregate[Gradle Plugin Portal].
+
 If you are using a SNAPSHOT, first ensure your `settings.gradle` is updated to resolve plugins from `repo.spring.io` as shown below:
 
 .settings.gradle
@@ -21,6 +22,8 @@ pluginManagement {
 	}
 }
 ----
+
+== io.spring.javadoc
 
 Next apply the plugin to each module that should be included in the aggregate Javadoc.
 The `io.spring.javadoc` serves as a marker to determine which projects are included in the aggregate Javadoc.
@@ -35,6 +38,7 @@ plugins {
 }
 ----
 
+== io.spring.javadoc-aggregate
 
 Next apply the `AggregateJavadoc` plugin to a project that will produce the aggregate Javadoc.
 
@@ -45,6 +49,8 @@ plugins {
 	id 'io.spring.javadoc-aggregate' version '{version}'
 }
 ----
+
+=== aggregateJavadoc Task
 
 This will create a task named `aggregateJavadoc` of type https://docs.gradle.org/current/dsl/org.gradle.api.tasks.javadoc.Javadoc.html[`Javadoc`].
 The task defaults the https://docs.gradle.org/current/dsl/org.gradle.api.tasks.javadoc.Javadoc.html#org.gradle.api.tasks.javadoc.Javadoc:source[source] and https://docs.gradle.org/current/dsl/org.gradle.api.tasks.javadoc.Javadoc.html#org.gradle.api.tasks.javadoc.Javadoc:classpath[classpath] to aggregate values based on all of the projects that contain the `io.spring.javadoc` plugin.
@@ -62,6 +68,8 @@ Finally, run the task.
 For our example, we assume that `io.spring.javadoc-aggregate` is applied to the project `aggregator`.
 You may apply to any module, but you will need to adjust the task accordingly.
 ====
+
+=== Customizing Aggregated Projects
 
 You can customize which projects' Javadoc is aggregated by explicitly providing projects for the `implementation` configuration.
 For example, the following explicitly aggregates `module1` and `module2` regardless of which projects have `io.spring.javadoc` applied to them.
