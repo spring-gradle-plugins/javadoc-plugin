@@ -74,6 +74,18 @@ For our example, we assume that `io.spring.javadoc-aggregate` is applied to the 
 You may apply to any module, but you will need to adjust the task accordingly.
 ====
 
+=== Excluding a Default Project
+
+You can exclude projects that are included by default using Gradle's build in exclusion mechanism.
+For example, the following would exclude `module2` from being aggregated:
+
+[source,groovy]
+----
+configurations.aggregateJavadocClasspath {
+    exclude module: 'module2'
+}
+----
+
 === Customizing Aggregated Projects
 
 You can customize which projects' Javadoc is aggregated by explicitly providing projects for the `aggregateJavadocClasspath` configuration.
