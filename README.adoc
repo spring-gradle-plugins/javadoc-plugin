@@ -50,6 +50,11 @@ plugins {
 }
 ----
 
+=== aggregateJavadocClasspath Configuration
+
+This will create a `Configuration` named `aggregateJavadocClasspath` that is used to determine the classpath for the <<aggregateJavadoc Task>>.
+This `Configuration` is defaulted to include all projects that have the `io.spring.javadoc` applied to it.
+
 === aggregateJavadoc Task
 
 This will create a task named `aggregateJavadoc` of type https://docs.gradle.org/current/dsl/org.gradle.api.tasks.javadoc.Javadoc.html[`Javadoc`].
@@ -71,7 +76,7 @@ You may apply to any module, but you will need to adjust the task accordingly.
 
 === Customizing Aggregated Projects
 
-You can customize which projects' Javadoc is aggregated by explicitly providing projects for the `implementation` configuration.
+You can customize which projects' Javadoc is aggregated by explicitly providing projects for the `aggregateJavadocClasspath` configuration.
 For example, the following explicitly aggregates `module1` and `module2` regardless of which projects have `io.spring.javadoc` applied to them.
 
 [source,groovy]
@@ -81,8 +86,8 @@ plugins {
 }
 
 dependencies {
-    implementation project(':module1')
-    implementation project(':module3')
+    aggregateJavadocClasspath project(':module1')
+    aggregateJavadocClasspath project(':module3')
 }
 ----
 

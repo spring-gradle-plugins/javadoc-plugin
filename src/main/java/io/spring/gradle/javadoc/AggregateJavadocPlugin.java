@@ -28,19 +28,22 @@ import java.util.function.Consumer;
 public class AggregateJavadocPlugin implements Plugin<Project> {
 	public static final String AGGREGATE_JAVADOC_TASK_NAME = "aggregateJavadoc";
 
+	public static final String AGGREGATE_JAVADOC_CLASSPATH_CONFIGURATION_NAME = "aggregateJavadocClasspath";
+
 	@Override
 	public void apply(Project project) {
 		project.getPlugins().apply(JavaPlugin.class);
-		aggregatedDependencies(project);
-		Configuration sourcesPath = sourcesPath(project);
-		aggregatedJavadoc(project,sourcesPath);
+		Configuration aggregatedConfiguration = aggregatedConfiguration(project);
+		Configuration sourcesPath = sourcesPath(project, aggregatedConfiguration);
+		aggregatedJavadoc(project,sourcesPath, aggregatedConfiguration);
 	}
 
-	private void aggregatedDependencies(Project project) {
+	private Configuration aggregatedConfiguration(Project project) {
 		ConfigurationContainer configurations = project.getConfigurations();
-		Configuration implementation = configurations
-				.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME);
-		implementation.defaultDependencies(new Action<DependencySet>() {
+		Configuration aggregatedConfiguration = configurations
+				.maybeCreate(AGGREGATE_JAVADOC_CLASSPATH_CONFIGURATION_NAME);
+		configurations.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME).extendsFrom(aggregatedConfiguration);
+		aggregatedConfiguration.defaultDependencies(new Action<DependencySet>() {
 			@Override
 			public void execute(DependencySet defaultDependencies) {
 				project.getGradle().getRootProject().subprojects(new Action<Project>() {
@@ -58,17 +61,18 @@ public class AggregateJavadocPlugin implements Plugin<Project> {
 				});
 			}
 		});
+		return aggregatedConfiguration;
 	}
 
-	private Configuration sourcesPath(Project project) {
+	private Configuration sourcesPath(Project project, Configuration aggregatedConfiguration) {
 		ConfigurationContainer configurations = project.getConfigurations();
 		return configurations.create("sourcesPath", new Action<Configuration>() {
 			@Override
-			public void execute(Configuration config) {
-				config.setCanBeResolved(true);
-				config.setCanBeConsumed(false);
-				config.extendsFrom(configurations.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME));
-				config.attributes(new Action<AttributeContainer>() {
+			public void execute(Configuration sourcesPath) {
+				sourcesPath.setCanBeResolved(true);
+				sourcesPath.setCanBeConsumed(false);
+				sourcesPath.extendsFrom(aggregatedConfiguration);
+				sourcesPath.attributes(new Action<AttributeContainer>() {
 					@Override
 					public void execute(AttributeContainer attributes) {
 						ObjectFactory objects = project.getObjects();
@@ -80,7 +84,7 @@ public class AggregateJavadocPlugin implements Plugin<Project> {
 								Attribute.of("org.gradle.docselements", String.class), "sources");
 					}
 				});
-				config.outgoing(new Action<ConfigurationPublications>() {
+				sourcesPath.outgoing(new Action<ConfigurationPublications>() {
 					@Override
 					public void execute(
 							ConfigurationPublications publications) {
@@ -100,16 +104,15 @@ public class AggregateJavadocPlugin implements Plugin<Project> {
 		});
 	}
 
-	private void aggregatedJavadoc(Project project, Configuration sourcesPath) {
+	private void aggregatedJavadoc(Project project, Configuration sourcesPath, Configuration aggregatedConfiguration) {
 		project.getTasks().create(AGGREGATE_JAVADOC_TASK_NAME, Javadoc.class, new Action<Javadoc>() {
 			@Override
 			public void execute(Javadoc javadoc) {
 				javadoc.setGroup("Documentation");
 				javadoc.setDescription("Generates the aggregate Javadoc");
 				ConfigurationContainer configurations = project.getConfigurations();
-				Configuration compile = configurations.getByName(JavaPlugin.COMPILE_CLASSPATH_CONFIGURATION_NAME);
 				javadoc.setSource(sourcesPath);
-				javadoc.setClasspath(compile);
+				javadoc.setClasspath(aggregatedConfiguration);
 			}
 		});
 	}

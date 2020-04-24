@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation project(':module1')
-    implementation project(':module3')
+    aggregateJavadocClasspath project(':module1')
+    aggregateJavadocClasspath project(':module3')
 }
