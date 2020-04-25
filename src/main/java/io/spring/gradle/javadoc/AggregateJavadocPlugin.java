@@ -1,5 +1,6 @@
 package io.spring.gradle.javadoc;
 
+import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -25,7 +26,8 @@ public class AggregateJavadocPlugin implements Plugin<Project> {
 		project.getPlugins().apply(JavaPlugin.class);
 		Configuration aggregatedConfiguration = aggregatedConfiguration(project);
 		Configuration sourcesPath = sourcesPath(project, aggregatedConfiguration);
-		aggregatedJavadoc(project, sourcesPath, aggregatedConfiguration);
+		project.getTasks().create(AGGREGATE_JAVADOC_TASK_NAME, Javadoc.class,
+				new JavadocTask(sourcesPath, aggregatedConfiguration));
 	}
 
 	private Configuration aggregatedConfiguration(Project project) {
@@ -47,13 +49,25 @@ public class AggregateJavadocPlugin implements Plugin<Project> {
 		});
 	}
 
-	private void aggregatedJavadoc(Project project, Configuration sourcesPath, Configuration aggregatedConfiguration) {
-		project.getTasks().create(AGGREGATE_JAVADOC_TASK_NAME, Javadoc.class, (javadoc) -> {
+	private static class JavadocTask implements Action<Javadoc>{
+
+		private final Configuration sourcesPath;
+
+		private final Configuration aggregatedConfiguration;
+
+		JavadocTask(Configuration sourcesPath, Configuration aggregatedConfiguration) {
+			this.sourcesPath = sourcesPath;
+			this.aggregatedConfiguration=aggregatedConfiguration;
+		}
+
+		@Override
+		public void execute(Javadoc javadoc) {
 			javadoc.setGroup("Documentation");
 			javadoc.setDescription("Generates the aggregate Javadoc");
 			javadoc.setSource(sourcesPath);
 			javadoc.setClasspath(aggregatedConfiguration);
-		});
+		}
+
 	}
 
 	private static class AggregatedDependencies {
