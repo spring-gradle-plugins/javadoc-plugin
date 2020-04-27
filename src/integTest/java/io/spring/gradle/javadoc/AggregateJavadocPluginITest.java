@@ -44,7 +44,7 @@ public class AggregateJavadocPluginITest {
 
 	private void runAggregateJavadocTask(String project) throws IOException,
 			URISyntaxException {
-		CopyUtils.fromResourceNameToDir("javadoc/" + project, this.workingDir);
+		CopyUtils.fromResourceNameToDir("javadoc/aggregate/" + project, this.workingDir);
 		String task = ":aggregator:" + AggregateJavadocPlugin.AGGREGATE_JAVADOC_TASK_NAME;
 		BuildResult buildResult = GradleRunner.create()
 				.withProjectDir(this.workingDir)
