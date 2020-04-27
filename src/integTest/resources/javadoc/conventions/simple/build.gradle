@@ -1,0 +1,13 @@
+plugins {
+	id 'java-library'
+	id 'io.spring.javadoc'
+	id 'io.spring.javadoc-conventions'
+}
+
+dependencies {
+	api 'com.google.guava:guava:23.0'
+}
+
+repositories {
+	mavenCentral()
+}

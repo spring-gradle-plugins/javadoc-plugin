@@ -7,6 +7,12 @@ pluginBundle {
 
 gradlePlugin {
 	plugins {
+		javadocConventionsPlugin {
+			id = 'io.spring.javadoc-conventions'
+			displayName = 'Javadoc Conventions Plugin'
+			description = 'Defaults the Javadoc'
+			implementationClass = 'io.spring.gradle.javadoc.JavadocConventionsPlugin'
+		}
 		javadocPlugin {
 			id = 'io.spring.javadoc'
 			displayName = 'Javadoc Plugin'

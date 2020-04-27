@@ -18,6 +18,7 @@ class CopyUtils {
 
 	public static void fromResourceNameToDir(String projectResourceName, File toDir)
 			throws IOException, URISyntaxException {
+		toDir.mkdirs();
 		ClassLoader classLoader = CopyUtils.class.getClassLoader();
 		URL resourceUrl = classLoader.getResource(projectResourceName);
 		if (resourceUrl == null) {
