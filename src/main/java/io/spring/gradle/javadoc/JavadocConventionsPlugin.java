@@ -13,6 +13,7 @@ import org.gradle.external.javadoc.StandardJavadocDocletOptions;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Rob Winch
@@ -38,13 +39,44 @@ public class JavadocConventionsPlugin implements Plugin<Project> {
 		project.getTasks().withType(Javadoc.class, javadoc -> {
 			javadoc.dependsOn(syncJavadocStylesheet);
 			StandardJavadocDocletOptions options = (StandardJavadocDocletOptions) javadoc.getOptions();
+			String title = title(project);
 			options.setAuthor(true);
-			options.setEncoding("UTF-8");
+			options.setDocTitle(title);
+			options.setEncoding(StandardCharsets.UTF_8.name());
 			options.setMemberLevel(JavadocMemberLevel.PROTECTED);
 			options.setOutputLevel(JavadocOutputLevel.QUIET);
 			options.splitIndex(true);
 			options.setStylesheetFile(project.file(STYLESHEET_FILE_NAME));
 			options.setUse(true);
+			options.setWindowTitle(title);
 		});
+	}
+
+	/**
+	 * Obtains the Javadoc title from the root project by stripping off "-build",
+	 * replacing all "-" with " ", and capitalizing each word.
+	 *
+	 * @param project
+	 * @return
+	 */
+	private String title(Project project) {
+		String BUILD = "-build";
+		String title = project.getRootProject().getName();
+		if (title != null && title.endsWith(BUILD)) {
+			title = title.substring(0, title.length() - BUILD.length());
+		}
+		title = title.replace("-", " ");
+		char[] chars = title.toCharArray();
+		boolean capitalizeNext = true;
+		for (int i=0;i<chars.length;i++) {
+			if (capitalizeNext) {
+				chars[i] = Character.toUpperCase(chars[i]);
+				capitalizeNext = false;
+			}
+			if (chars[i] == ' ') {
+				capitalizeNext = true;
+			}
+		}
+		return new String(chars) + " API";
 	}
 }

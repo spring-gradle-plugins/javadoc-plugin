@@ -103,6 +103,23 @@ dependencies {
 }
 ----
 
+== io.spring.javadoc-conventions
+
+Apply the `io.spring.javadoc-conventions` plugin to default the https://docs.gradle.org/current/dsl/org.gradle.api.tasks.javadoc.Javadoc.html[`Javadoc`] task options.
+The following defaults will be set:
+* `author` is defaulted to `true`
+* `docTitle`  defaulted to a modified value of the root project's name
+** If it ends in `-build`, it will be stripped off
+** Any `-` will be replaced with a space ` `
+** Each word will be capitalized
+* `encoding` is defaulted to `UTF-8`
+* `memberLevel` is defaulted to `JavadocMemberLevel.PROTECTED`
+* `outputLevel` is defaulted to `JavadocOutputLevel.QUIET`
+* `splitIndex` is defaulted to `true`
+* `stylesheetFile` is defaulted to Spring's default stylesheet
+* `use` is defaulted to `true`
+* `windowTitle` is defaulted to the same value as `docTitle`
+
 == License
 
 This project is Open Source software released under the http://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license].
