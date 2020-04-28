@@ -1,6 +1,5 @@
 package moduel2;
 
-import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 
 /**
@@ -8,10 +7,10 @@ import org.slf4j.Logger;
  */
 public class Test {
 
-    /**
-     * Logger
-     *
-     * @return The Logger
-     */
-    Logger logger();
+	/**
+	 * Logger
+	 *
+	 * @return The Logger
+	 */
+	Logger logger();
 }
