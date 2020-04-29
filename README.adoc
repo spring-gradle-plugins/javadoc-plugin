@@ -124,4 +124,4 @@ The following defaults will be set:
 
 == License
 
-This project is Open Source software released under the http://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license].
+This project is Open Source software released under the https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license].
