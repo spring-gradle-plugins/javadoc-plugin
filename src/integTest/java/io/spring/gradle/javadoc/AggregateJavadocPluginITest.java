@@ -42,6 +42,14 @@ public class AggregateJavadocPluginITest {
 	}
 
 	@Test
+	void aggregateJavadocWhenAspectsThenSuccess() throws Exception {
+		runAggregateJavadocTask("aspects");
+		assertThat(aggregateJavadocPath("module1/M1")).exists();
+		assertThat(aggregateJavadocPath("module2/M2")).exists();
+		assertThat(aggregateJavadocPath("test")).doesNotExist();
+	}
+
+	@Test
 	void aggregateJavadocWhenCustomProjectsThenSuccess() throws Exception {
 		runAggregateJavadocTask("custom-projects");
 		assertThat(aggregateJavadocPath("module1/M1")).exists();

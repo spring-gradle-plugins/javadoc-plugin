@@ -113,7 +113,7 @@ public class AggregateJavadocPlugin implements Plugin<Project> {
 					public void execute(ConfigurationPublications publications) {
 						JavaPluginConvention javaPlugin = project.getConvention().getPlugin(JavaPluginConvention.class);
 						SourceSet mainSrc = javaPlugin.getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME);
-						mainSrc.getAllJava().getSrcDirs().forEach(new Consumer<File>() {
+						mainSrc.getAllJava().forEach(new Consumer<File>() {
 							@Override
 							public void accept(File file) {
 								publications.artifact(file);
