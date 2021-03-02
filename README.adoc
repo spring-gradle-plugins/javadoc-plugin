@@ -18,7 +18,7 @@ If you are using a SNAPSHOT, first ensure your `settings.gradle` is updated to r
 pluginManagement {
 	repositories {
 		gradlePluginPortal()
-		maven { url 'https://repo.spring.io/plugins-snapshots' }
+		maven { url 'https://repo.spring.io/plugins-snapshot' }
 	}
 }
 ----
