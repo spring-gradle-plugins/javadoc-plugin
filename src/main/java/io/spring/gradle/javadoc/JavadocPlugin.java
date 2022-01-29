@@ -41,13 +41,19 @@ import org.gradle.api.tasks.SourceSet;
  */
 public class JavadocPlugin implements Plugin<Project> {
 
+	/**
+	 * A configuration producing the sources that will be used for the aggregate Javadoc
+	 * task.
+	 */
+	public static final String JAVADOC_SOURCES_ELEMENTS_CONFIGURATION_NAME = "javadocSourcesElements";
+
 	@Override
 	public void apply(Project project) {
 		project.getPlugins().withType(JavaPlugin.class).all((javaPlugin) -> withSourcesElements(project));
 	}
 
 	private void withSourcesElements(Project project) {
-		project.getConfigurations().create("sourcesElements", new Action<Configuration>() {
+		project.getConfigurations().create(JAVADOC_SOURCES_ELEMENTS_CONFIGURATION_NAME, new Action<Configuration>() {
 			@Override
 			public void execute(Configuration config) {
 				config.setCanBeResolved(false);
